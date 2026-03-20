@@ -8,6 +8,10 @@ wheels/
 
 # Virtual environments
 .venv
+prod_venv/
 .env
+
+# Database and Vector data
 *.db
 chroma_data/
+chroma_db_data/
