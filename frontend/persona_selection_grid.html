@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ethereal AI - Persona Selection</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "error-container": "#a70138",
+              "surface-container-lowest": "#000000",
+              "primary-dim": "#8455ef",
+              "on-secondary-container": "#ecfaff",
+              "on-error": "#490013",
+              "surface-container": "#1a1a1a",
+              "on-error-container": "#ffb2b9",
+              "on-surface": "#ffffff",
+              "primary": "#ba9eff",
+              "surface-container-high": "#20201f",
+              "tertiary-dim": "#ec63ff",
+              "secondary-fixed": "#65e1ff",
+              "background": "#0e0e0e",
+              "surface": "#0e0e0e",
+              "surface-tint": "#ba9eff",
+              "on-primary-fixed": "#000000",
+              "primary-container": "#ae8dff",
+              "on-tertiary": "#3d0047",
+              "surface-dim": "#0e0e0e",
+              "inverse-primary": "#6e3bd7",
+              "on-secondary-fixed-variant": "#005969",
+              "error": "#ff6e84",
+              "outline": "#767575",
+              "secondary-fixed-dim": "#48d4f3",
+              "surface-container-highest": "#262626",
+              "on-secondary": "#004b58",
+              "on-surface-variant": "#adaaaa",
+              "tertiary": "#ec63ff",
+              "on-primary-fixed-variant": "#370086",
+              "surface-container-low": "#131313",
+              "secondary-container": "#00687a",
+              "on-tertiary-fixed": "#300038",
+              "on-secondary-fixed": "#003a45",
+              "inverse-surface": "#fcf9f8",
+              "surface-bright": "#2c2c2c",
+              "error-dim": "#d73357",
+              "tertiary-container": "#de4bf4",
+              "primary-fixed-dim": "#a27cff",
+              "on-tertiary-fixed-variant": "#660075",
+              "tertiary-fixed": "#f487ff",
+              "on-primary": "#39008c",
+              "surface-variant": "#262626",
+              "outline-variant": "#484847",
+              "primary-fixed": "#ae8dff",
+              "secondary-dim": "#40ceed",
+              "on-background": "#ffffff",
+              "secondary": "#53ddfc",
+              "on-tertiary-container": "#19001e",
+              "inverse-on-surface": "#565555",
+              "tertiary-fixed-dim": "#ef6eff",
+              "on-primary-container": "#2b006e"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .glass-card {
+        background: rgba(38, 38, 38, 0.5);
+        backdrop-filter: blur(20px);
+      }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body min-h-screen overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-transparent backdrop-blur-xl flex justify-between items-center px-6 py-4 w-full">
+<div class="text-2xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-violet-400 to-fuchsia-500 font-['Inter']">
+            Ethereal AI
+        </div>
+<div class="flex items-center gap-4">
+<button class="hover:bg-white/5 hover:scale-[1.02] transition-all p-2 rounded-full text-violet-400">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+<button class="hover:bg-white/5 hover:scale-[1.02] transition-all p-2 rounded-full text-violet-400">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+</div>
+</header>
+<div class="flex min-h-screen pt-20 pb-24 lg:pb-0">
+<!-- SideNavBar -->
+<aside class="hidden lg:flex flex-col h-screen w-72 rounded-r-[3rem] border-r border-white/5 bg-neutral-950/80 backdrop-blur-2xl py-8 sticky top-0">
+<div class="px-8 mb-10">
+<p class="text-neutral-500 text-xs font-semibold uppercase tracking-widest mb-1">Welcome back</p>
+<h2 class="text-xl font-bold text-violet-500">Ethereal Intelligence</h2>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-4 text-neutral-500 px-6 py-3 hover:bg-white/5 hover:text-white transition-colors font-medium text-sm tracking-wide" href="#">
+<span class="material-symbols-outlined">dashboard</span> Home
+                </a>
+<a class="flex items-center gap-4 bg-gradient-to-r from-violet-600/20 to-transparent text-violet-300 border-l-4 border-violet-500 px-6 py-3 font-medium text-sm tracking-wide Active: translate-x-1 transition-transform" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">neurology</span> Personas
+                </a>
+<a class="flex items-center gap-4 text-neutral-500 px-6 py-3 hover:bg-white/5 hover:text-white transition-colors font-medium text-sm tracking-wide" href="#">
+<span class="material-symbols-outlined">history</span> History
+                </a>
+<a class="flex items-center gap-4 text-neutral-500 px-6 py-3 hover:bg-white/5 hover:text-white transition-colors font-medium text-sm tracking-wide" href="#">
+<span class="material-symbols-outlined">settings</span> Settings
+                </a>
+</nav>
+<div class="px-6 mt-auto space-y-4">
+<button class="w-full py-4 rounded-xl bg-gradient-to-br from-primary to-primary-dim text-on-primary-fixed font-bold text-sm shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all">
+                    Upgrade to Pro
+                </button>
+<div class="pt-4 border-t border-white/5 space-y-1">
+<a class="flex items-center gap-4 text-neutral-500 px-2 py-2 hover:text-white transition-colors text-sm" href="#">
+<span class="material-symbols-outlined">help</span> Support
+                    </a>
+<a class="flex items-center gap-4 text-neutral-500 px-2 py-2 hover:text-white transition-colors text-sm" href="#">
+<span class="material-symbols-outlined">logout</span> Logout
+                    </a>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 px-6 lg:px-12 py-8 max-w-7xl mx-auto">
+<header class="mb-12 text-center lg:text-left">
+<h1 class="text-4xl lg:text-5xl font-extrabold tracking-tight mb-4 text-on-surface">Choose Your AI Companion</h1>
+<p class="text-on-surface-variant text-lg max-w-2xl">Select an identity that fits your journey. Our specialized neural models are trained to assist in diverse environments.</p>
+</header>
+<!-- Persona Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
+<!-- Persona Card: Friend -->
+<div class="group relative bg-surface-container-low rounded-xl p-8 hover:scale-[1.02] transition-all cursor-pointer border border-transparent hover:border-primary/20 shadow-lg">
+<div class="mb-6 w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center text-white shadow-lg shadow-cyan-500/20">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">sentiment_satisfied</span>
+</div>
+<h3 class="text-xl font-bold mb-2 text-white">Friend</h3>
+<p class="text-on-surface-variant leading-relaxed">Someone to talk to, share thoughts, and explore casual conversations with.</p>
+</div>
+<!-- Persona Card: Mentor (Selected State) -->
+<div class="group relative bg-surface-container-low rounded-xl p-8 scale-[1.02] transition-all cursor-pointer border-2 border-primary shadow-[0_0_40px_rgba(186,158,255,0.15)] ring-1 ring-primary/50">
+<div class="absolute top-4 right-4 bg-primary text-on-primary rounded-full p-1 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm font-bold">check</span>
+</div>
+<div class="mb-6 w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-tertiary flex items-center justify-center text-white shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">school</span>
+</div>
+<h3 class="text-xl font-bold mb-2 text-white">Mentor</h3>
+<p class="text-on-surface-variant leading-relaxed">Your wise life coach, focusing on career growth, wisdom, and structured guidance.</p>
+</div>
+<!-- Persona Card: Girlfriend -->
+<div class="group relative bg-surface-container-low rounded-xl p-8 hover:scale-[1.02] transition-all cursor-pointer border border-transparent hover:border-primary/20 shadow-lg">
+<div class="mb-6 w-16 h-16 rounded-2xl bg-gradient-to-br from-pink-400 to-rose-600 flex items-center justify-center text-white shadow-lg shadow-rose-500/20">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+<h3 class="text-xl font-bold mb-2 text-white">Girlfriend</h3>
+<p class="text-on-surface-variant leading-relaxed">An affectionate and supportive companion for deep emotional connection and daily chat.</p>
+</div>
+<!-- Persona Card: General Assistant -->
+<div class="group relative bg-surface-container-low rounded-xl p-8 hover:scale-[1.02] transition-all cursor-pointer border border-transparent hover:border-primary/20 shadow-lg">
+<div class="mb-6 w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-400 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</div>
+<h3 class="text-xl font-bold mb-2 text-white">General Assistant</h3>
+<p class="text-on-surface-variant leading-relaxed">Efficiency first. Specialized in tasks, scheduling, and logical problem solving.</p>
+</div>
+<!-- Persona Card: Dietitian -->
+<div class="group relative bg-surface-container-low rounded-xl p-8 hover:scale-[1.02] transition-all cursor-pointer border border-transparent hover:border-primary/20 shadow-lg">
+<div class="mb-6 w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center text-white shadow-lg shadow-emerald-500/20">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">nutrition</span>
+</div>
+<h3 class="text-xl font-bold mb-2 text-white">Dietitian</h3>
+<p class="text-on-surface-variant leading-relaxed">Focused on your health and wellness. Provides meal plans and nutritional advice.</p>
+</div>
+<!-- Persona Card: Doctor -->
+<div class="group relative bg-surface-container-low rounded-xl p-8 hover:scale-[1.02] transition-all cursor-pointer border border-transparent hover:border-primary/20 shadow-lg">
+<div class="mb-6 w-16 h-16 rounded-2xl bg-gradient-to-br from-secondary to-blue-500 flex items-center justify-center text-white shadow-lg shadow-secondary/20">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">medical_services</span>
+</div>
+<h3 class="text-xl font-bold mb-2 text-white">Doctor</h3>
+<p class="text-on-surface-variant leading-relaxed">Highly analytical and empathetic medical logic for understanding symptoms and health data.</p>
+</div>
+</div>
+<!-- Start Chatting CTA Section -->
+<div class="mt-16 flex flex-col items-center">
+<button class="group relative flex items-center gap-3 bg-gradient-to-br from-primary to-primary-dim text-on-primary-fixed px-12 py-5 rounded-full font-black text-lg shadow-[0_0_30px_rgba(186,158,255,0.4)] hover:scale-105 active:scale-95 transition-all">
+                    Start Chatting
+                    <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+<p class="mt-4 text-neutral-500 text-sm italic">You are currently selecting the <span class="text-primary font-bold">Mentor</span> persona.</p>
+</div>
+</main>
+</div>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="lg:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-neutral-950/70 backdrop-blur-lg rounded-t-[3rem] border-t border-white/10 shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
+<a class="flex flex-col items-center justify-center text-neutral-500 p-3 hover:text-cyan-200 transition-all" href="#">
+<span class="material-symbols-outlined">chat_bubble</span>
+<span class="font-['Inter'] text-[10px] font-semibold tracking-[0.05em] uppercase mt-1">Chat</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-violet-600/10 text-cyan-400 rounded-full p-3 mb-2 scale-110 active:duration-150 ease-out" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">explore</span>
+<span class="font-['Inter'] text-[10px] font-semibold tracking-[0.05em] uppercase mt-1">Explore</span>
+</a>
+<a class="flex flex-col items-center justify-center text-neutral-500 p-3 hover:text-cyan-200 transition-all" href="#">
+<span class="material-symbols-outlined">auto_awesome_motion</span>
+<span class="font-['Inter'] text-[10px] font-semibold tracking-[0.05em] uppercase mt-1">Library</span>
+</a>
+<a class="flex flex-col items-center justify-center text-neutral-500 p-3 hover:text-cyan-200 transition-all" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-['Inter'] text-[10px] font-semibold tracking-[0.05em] uppercase mt-1">Profile</span>
+</a>
+</nav>
+<!-- AI Thinking Pulse background (Decorative) -->
+<div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-tertiary/5 rounded-full blur-[120px] pointer-events-none -z-10"></div>
+<div class="fixed bottom-0 right-0 w-[400px] h-[400px] bg-secondary/5 rounded-full blur-[100px] pointer-events-none -z-10"></div>
+<script>
+let selectedPersona = 'mentor'; // Default based on UI
+const userId = localStorage.getItem("persona_ai_user_id");
+
+if (!userId) {
+    window.location.href = '/frontend/user_onboarding_flow.html';
+}
+
+const personaMap = {
+    'Friend': 'friend',
+    'Mentor': 'mentor',
+    'Girlfriend': 'girlfriend',
+    'General Assistant': 'general_assistant',
+    'Dietitian': 'dietitian',
+    'Doctor': 'doctor'
+};
+
+const cards = document.querySelectorAll('.grid > .group.cursor-pointer');
+const selectedTextSpan = document.querySelector('.mt-4.text-neutral-500 span');
+
+cards.forEach(card => {
+    card.addEventListener('click', () => {
+        // Reset styles for all cards
+        cards.forEach(c => {
+            c.classList.remove('border-2', 'border-primary', 'shadow-[0_0_40px_rgba(186,158,255,0.15)]', 'ring-1', 'ring-primary/50', 'scale-[1.02]');
+            c.classList.add('border', 'border-transparent', 'hover:border-primary/20', 'shadow-lg', 'hover:scale-[1.02]');
+            const check = c.querySelector('.absolute.top-4');
+            if(check) check.remove();
+        });
+        
+        // Add selected styles
+        card.classList.remove('border', 'border-transparent', 'hover:border-primary/20', 'shadow-lg', 'hover:scale-[1.02]');
+        card.classList.add('border-2', 'border-primary', 'shadow-[0_0_40px_rgba(186,158,255,0.15)]', 'ring-1', 'ring-primary/50', 'scale-[1.02]');
+        card.insertAdjacentHTML('afterbegin', `
+            <div class="absolute top-4 right-4 bg-primary text-on-primary rounded-full p-1 flex items-center justify-center">
+                <span class="material-symbols-outlined text-sm font-bold">check</span>
+            </div>
+        `);
+        
+        const title = card.querySelector('h3').innerText.trim();
+        selectedPersona = personaMap[title] || 'general_assistant';
+        if (selectedTextSpan) {
+            selectedTextSpan.innerText = title;
+        }
+    });
+});
+
+document.querySelector('button.group.relative').addEventListener('click', async () => {
+    try {
+        const response = await fetch('/persona/setup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                user_id: userId,
+                persona: selectedPersona,
+                preferences: {}
+            })
+        });
+        
+        if (response.ok) {
+            localStorage.setItem("persona_ai_current_persona", selectedPersona);
+            window.location.href = '/frontend/main_chat_experience.html';
+        } else {
+            console.error(await response.text());
+            alert('Error setting up persona.');
+        }
+    } catch (e) {
+        console.error(e);
+        alert('Network error.');
+    }
+});
+</script>
+</body></html>

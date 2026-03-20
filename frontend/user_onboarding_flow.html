@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ethereal AI - Onboarding</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "error-container": "#a70138",
+                        "surface-container-lowest": "#000000",
+                        "primary-dim": "#8455ef",
+                        "on-secondary-container": "#ecfaff",
+                        "on-error": "#490013",
+                        "surface-container": "#1a1a1a",
+                        "on-error-container": "#ffb2b9",
+                        "on-surface": "#ffffff",
+                        "primary": "#ba9eff",
+                        "surface-container-high": "#20201f",
+                        "tertiary-dim": "#ec63ff",
+                        "secondary-fixed": "#65e1ff",
+                        "background": "#0e0e0e",
+                        "surface": "#0e0e0e",
+                        "surface-tint": "#ba9eff",
+                        "on-primary-fixed": "#000000",
+                        "primary-container": "#ae8dff",
+                        "on-tertiary": "#3d0047",
+                        "surface-dim": "#0e0e0e",
+                        "inverse-primary": "#6e3bd7",
+                        "on-secondary-fixed-variant": "#005969",
+                        "error": "#ff6e84",
+                        "outline": "#767575",
+                        "secondary-fixed-dim": "#48d4f3",
+                        "surface-container-highest": "#262626",
+                        "on-secondary": "#004b58",
+                        "on-surface-variant": "#adaaaa",
+                        "tertiary": "#ec63ff",
+                        "on-primary-fixed-variant": "#370086",
+                        "surface-container-low": "#131313",
+                        "secondary-container": "#00687a",
+                        "on-tertiary-fixed": "#300038",
+                        "on-secondary-fixed": "#003a45",
+                        "inverse-surface": "#fcf9f8",
+                        "surface-bright": "#2c2c2c",
+                        "error-dim": "#d73357",
+                        "tertiary-container": "#de4bf4",
+                        "primary-fixed-dim": "#a27cff",
+                        "on-tertiary-fixed-variant": "#660075",
+                        "tertiary-fixed": "#f487ff",
+                        "on-primary": "#39008c",
+                        "surface-variant": "#262626",
+                        "outline-variant": "#484847",
+                        "primary-fixed": "#ae8dff",
+                        "secondary-dim": "#40ceed",
+                        "on-background": "#ffffff",
+                        "secondary": "#53ddfc",
+                        "on-tertiary-container": "#19001e",
+                        "inverse-on-surface": "#565555",
+                        "tertiary-fixed-dim": "#ef6eff",
+                        "on-primary-container": "#2b006e"
+                    },
+                    fontFamily: {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        body {
+            background-color: #0a0a0a;
+            background-image: radial-gradient(circle at top right, rgba(98, 0, 238, 0.15), transparent 40%);
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="font-body text-on-surface min-h-screen flex flex-col items-center justify-center overflow-hidden">
+<!-- Top Progress Bar -->
+<div class="fixed top-0 left-0 w-full h-1 bg-surface-container-highest z-50">
+<div class="h-full bg-gradient-to-r from-primary to-tertiary w-1/4 transition-all duration-700"></div>
+</div>
+<!-- Background Atmospheric Orbs -->
+<div class="fixed top-1/4 -left-20 w-96 h-96 bg-primary/5 rounded-full blur-[120px] pointer-events-none"></div>
+<div class="fixed bottom-1/4 -right-20 w-80 h-80 bg-secondary/5 rounded-full blur-[100px] pointer-events-none"></div>
+<!-- Onboarding Container -->
+<main class="relative w-full max-w-md px-6 flex flex-col items-center">
+<!-- Step 1 Card: Let's Get Started -->
+<section class="glass-card w-full rounded-xl p-8 flex flex-col space-y-8 shadow-2xl scale-100 transition-all duration-500">
+<header class="space-y-2 text-center">
+<h1 class="text-3xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-violet-400 to-fuchsia-500">
+                    Let's Get Started
+                </h1>
+<p class="text-on-surface-variant text-sm tracking-wide">Tell us who you are in the digital ether.</p>
+</header>
+<div class="space-y-6">
+<!-- Name Input -->
+<div class="space-y-2">
+<label class="text-xs font-bold uppercase tracking-widest text-primary/70 px-4">Full Name</label>
+<input id="name-input" class="w-full bg-surface-container-low border-none rounded-xl px-6 py-4 focus:ring-2 focus:ring-primary/30 transition-all placeholder:text-outline-variant" placeholder="E.g. Alex Thorne" type="text"/>
+</div>
+<!-- Age & Gender Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div class="space-y-2">
+<label class="text-xs font-bold uppercase tracking-widest text-primary/70 px-4">Age</label>
+<input id="age-input" class="w-full bg-surface-container-low border-none rounded-xl px-6 py-4 focus:ring-2 focus:ring-primary/30 transition-all placeholder:text-outline-variant" placeholder="24" type="number"/>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-bold uppercase tracking-widest text-primary/70 px-4">Gender</label>
+<div class="relative">
+<select id="gender-select" class="w-full bg-surface-container-low border-none rounded-xl px-6 py-4 focus:ring-2 focus:ring-primary/30 appearance-none transition-all">
+<option>Non-binary</option>
+<option>Male</option>
+<option>Female</option>
+<option>Other</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-outline-variant">expand_more</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Profile Placeholder Image -->
+<div class="flex justify-center py-4">
+<div class="relative w-24 h-24 rounded-full p-1 bg-gradient-to-tr from-primary via-tertiary to-secondary">
+<img alt="Profile Preview" class="w-full h-full rounded-full object-cover border-4 border-surface" data-alt="Portrait of a modern young person with neon lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBo6JYsF0qf5YqMt_bj0nYv7XgJNQwWdf0UAKw7ngRGoPgmigngOqXJlwPspjBrjIjZK146HEIPKyhpJLoX2xfqWByY7xr4W6iqXyhix95RTYsCHWszMgzUVfXTVzzPV3_3_2pLsp2xhxPQtZ9uUZ1oZcN1QDoeSgNTUHtZzp3kiKlK3xyU7YfBZejvfSko4EWFOyJi-CEN_pu7-sRqB2HBMy0npSSTeIwDXRdLRjVGt1Q-zM2C45aY_tTzLrH95n5tTFndKtdviPI_"/>
+<button class="absolute bottom-0 right-0 bg-primary text-on-primary-fixed p-1.5 rounded-full shadow-lg">
+<span class="material-symbols-outlined text-sm">add_a_photo</span>
+</button>
+</div>
+</div>
+<!-- Next Button Section (Integrated) -->
+<div class="pt-4">
+<button id="continue-btn" class="w-full py-5 rounded-full bg-gradient-to-r from-primary to-primary-container text-on-primary-fixed font-bold text-lg hover:scale-[1.02] active:scale-95 transition-all shadow-xl shadow-primary/20 flex items-center justify-center space-x-2">
+<span>Continue Journey</span>
+<span class="material-symbols-outlined">east</span>
+</button>
+</div>
+</section>
+<!-- (Hidden Steps visual representation for prototype context) -->
+<div class="mt-12 flex space-x-3 opacity-30">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<div class="w-2 h-2 rounded-full bg-surface-container-highest"></div>
+<div class="w-2 h-2 rounded-full bg-surface-container-highest"></div>
+<div class="w-2 h-2 rounded-full bg-surface-container-highest"></div>
+</div>
+</main>
+<!-- Floating Navigation (Contextual) -->
+<nav class="fixed bottom-12 w-full max-w-md px-6 flex justify-between items-center pointer-events-none">
+<button class="pointer-events-auto w-14 h-14 rounded-full glass-card flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors group">
+<span class="material-symbols-outlined group-hover:-translate-x-1 transition-transform">west</span>
+</button>
+<div class="pointer-events-auto px-6 py-3 rounded-full glass-card text-xs font-bold uppercase tracking-widest text-on-surface-variant">
+            Step 1 <span class="mx-2 text-outline-variant">/</span> 4
+        </div>
+</nav>
+<!-- Content Examples for subsequent steps (Commented/Invisible structure) -->
+<div class="hidden">
+<!-- Step 2: Interests -->
+<div class="flex flex-wrap gap-3">
+<div class="px-6 py-3 rounded-full bg-secondary-container text-on-secondary-container font-semibold">Tech</div>
+<div class="px-6 py-3 rounded-full border border-outline-variant text-on-surface-variant">Travel</div>
+</div>
+<!-- Toggle: Casual vs Formal -->
+<div class="flex bg-surface-container-low p-1 rounded-full w-full">
+<button class="flex-1 py-3 rounded-full bg-surface-container-highest text-primary font-bold">Casual</button>
+<button class="flex-1 py-3 rounded-full text-outline-variant">Formal</button>
+</div>
+<!-- Map Location (Step 3) -->
+<div class="w-full h-48 rounded-xl overflow-hidden bg-surface-container-low mt-4">
+<img alt="Cyberpunk city map" class="w-full h-full object-cover opacity-50 grayscale hover:grayscale-0 transition-all duration-700" data-location="Tokyo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9T5cBbHVkR77X3mvnHqoha8znOPjYflg6BVVL-pcExxB017bFwMoT6vJi0zx0TxJePPtmSredSUdS-HZTTDboii8969Y9SYj2-bjkx00gBtgZON5b9dvL5Fq7Obreu57dZBPQSLHfQGmyWVAv2bMIv2ZSJ480DhR8bwozrR4ukxgtD-79RsUPx33q6i4PkSvgXYf1wtIw8G0pdH0B01sABLoATkNjVHodGphRqOHatGokD6fcgXyXVz-M32Ii3tbyItlKQVsPgiGy"/>
+</div>
+</div>
+<!-- Identity Branding (JSON TopAppBar Ref) -->
+<div class="fixed top-8 left-8 hidden lg:block">
+<span class="text-2xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-violet-400 to-fuchsia-500">
+            Ethereal AI
+        </span>
+</div>
+<!-- User Persona Selection (Step 4 Logic Hint) -->
+<div class="hidden lg:flex fixed top-8 right-8 space-x-4">
+<div class="flex items-center space-x-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">auto_awesome</span>
+<span class="text-xs font-bold uppercase tracking-tighter">Persona Engine Active</span>
+</div>
+</div>
+<script>
+// Generate or retrieve user ID
+let userId = localStorage.getItem("persona_ai_user_id");
+if (!userId) {
+    userId = "user_" + Math.random().toString(36).substring(2, 10);
+    localStorage.setItem("persona_ai_user_id", userId);
+}
+
+document.getElementById('continue-btn').addEventListener('click', async () => {
+    const name = document.getElementById('name-input').value.trim();
+    const age = parseInt(document.getElementById('age-input').value);
+    const gender = document.getElementById('gender-select').value;
+    
+    if (!name) {
+        alert("Please enter your name to continue exploring the digital ether.");
+        return;
+    }
+    
+    const payload = {
+        user_id: userId,
+        name: name,
+        age: isNaN(age) ? null : age,
+        gender: gender,
+        interests: [],
+        communication_style: "casual"
+    };
+    
+    try {
+        const response = await fetch('/onboarding', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        
+        if (response.ok) {
+            window.location.href = '/frontend/persona_selection_grid.html';
+        } else {
+            console.error("Failed to save profile:", await response.text());
+            alert("Error saving your profile. Please try again.");
+        }
+    } catch (e) {
+        console.error("Network error:", e);
+        alert("Network error. Make sure the server is running.");
+    }
+});
+</script>
+</body></html>

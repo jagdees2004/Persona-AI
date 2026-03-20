@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ethereal AI | Chat Interface</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "error-container": "#a70138",
+              "surface-container-lowest": "#000000",
+              "primary-dim": "#8455ef",
+              "on-secondary-container": "#ecfaff",
+              "on-error": "#490013",
+              "surface-container": "#1a1a1a",
+              "on-error-container": "#ffb2b9",
+              "on-surface": "#ffffff",
+              "primary": "#ba9eff",
+              "surface-container-high": "#20201f",
+              "tertiary-dim": "#ec63ff",
+              "secondary-fixed": "#65e1ff",
+              "background": "#0e0e0e",
+              "surface": "#0e0e0e",
+              "surface-tint": "#ba9eff",
+              "on-primary-fixed": "#000000",
+              "primary-container": "#ae8dff",
+              "on-tertiary": "#3d0047",
+              "surface-dim": "#0e0e0e",
+              "inverse-primary": "#6e3bd7",
+              "on-secondary-fixed-variant": "#005969",
+              "error": "#ff6e84",
+              "outline": "#767575",
+              "secondary-fixed-dim": "#48d4f3",
+              "surface-container-highest": "#262626",
+              "on-secondary": "#004b58",
+              "on-surface-variant": "#adaaaa",
+              "tertiary": "#ec63ff",
+              "on-primary-fixed-variant": "#370086",
+              "surface-container-low": "#131313",
+              "secondary-container": "#00687a",
+              "on-tertiary-fixed": "#300038",
+              "on-secondary-fixed": "#003a45",
+              "inverse-surface": "#fcf9f8",
+              "surface-bright": "#2c2c2c",
+              "error-dim": "#d73357",
+              "tertiary-container": "#de4bf4",
+              "primary-fixed-dim": "#a27cff",
+              "on-tertiary-fixed-variant": "#660075",
+              "tertiary-fixed": "#f487ff",
+              "on-primary": "#39008c",
+              "surface-variant": "#262626",
+              "outline-variant": "#484847",
+              "primary-fixed": "#ae8dff",
+              "secondary-dim": "#40ceed",
+              "on-background": "#ffffff",
+              "secondary": "#53ddfc",
+              "on-tertiary-container": "#19001e",
+              "inverse-on-surface": "#565555",
+              "tertiary-fixed-dim": "#ef6eff",
+              "on-primary-container": "#2b006e"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #484847; border-radius: 10px; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body selection:bg-primary/30 h-screen flex overflow-hidden">
+<!-- Sidebar (Shared Component: SideNavBar) -->
+<aside class="hidden lg:flex flex-col h-full py-8 bg-neutral-950/80 backdrop-blur-2xl h-screen w-72 rounded-r-[3rem] border-r border-white/5 font-['Inter'] text-sm tracking-wide font-medium shadow-2xl shadow-violet-500/10 z-30">
+<div class="px-8 mb-10">
+<h1 class="text-xl font-bold text-violet-500">Ethereal AI</h1>
+<div class="mt-6 flex items-center gap-3 p-3 bg-white/5 rounded-xl">
+<img class="w-10 h-10 rounded-full object-cover" data-alt="User profile avatar with soft lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_weOTtScJS3AXGTS9MUQxq1EDv39OTKlvybLrYLnfuvFnWz3WyHRh6z-hSncuAlq3QNCsIW43z_Lz4N4hvy2f_0wrBFwcMKvHTi7oJcgQo-WdzNIp1b7hzdhCkpGfTWRGcgTawnz46GYiWPnjUsvu1yA887tyA9zhosTKUOKUmj-jcAeir5qtx3OP4WVVPAPOhINDM1SCyuRLMFfWkjrGFZMiH6aoqhtwrLJJqTBgf-wfiYdBX7n8GxdaWUpCTyLR5lXfdLomrfG6"/>
+<div class="overflow-hidden">
+<p class="text-on-surface font-bold truncate">Welcome back</p>
+<p class="text-on-surface-variant text-xs truncate">Ethereal Intelligence</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1 overflow-y-auto no-scrollbar">
+<!-- Active State Logic: Home is active -->
+<a class="bg-gradient-to-r from-violet-600/20 to-transparent text-violet-300 border-l-4 border-violet-500 px-6 py-3 flex items-center gap-4 Active: translate-x-1 transition-transform" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Home</span>
+</a>
+<a class="text-neutral-500 px-6 py-3 flex items-center gap-4 hover:bg-white/5 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">neurology</span>
+<span>Personas</span>
+</a>
+<a class="text-neutral-500 px-6 py-3 flex items-center gap-4 hover:bg-white/5 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">history</span>
+<span>History</span>
+</a>
+<a class="text-neutral-500 px-6 py-3 flex items-center gap-4 hover:bg-white/5 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+<div class="pt-8 px-6">
+<p class="text-[10px] uppercase tracking-widest text-on-surface-variant mb-4 opacity-50">Recent Personas</p>
+<div class="space-y-3">
+<div class="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 cursor-pointer transition-all">
+<div class="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-sm">auto_awesome</span>
+</div>
+<span class="text-on-surface-variant text-xs">Ethereal Oracle</span>
+</div>
+<div class="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 cursor-pointer transition-all">
+<div class="w-8 h-8 rounded-full bg-tertiary/20 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-sm">code</span>
+</div>
+<span class="text-on-surface-variant text-xs">Logic Weaver</span>
+</div>
+</div>
+</div>
+</nav>
+<div class="px-6 mt-auto">
+<button class="w-full bg-gradient-to-br from-primary to-primary-container text-on-primary-container font-bold py-3 rounded-full hover:scale-[1.02] transition-all active:scale-95">
+                Upgrade to Pro
+            </button>
+<div class="mt-6 flex flex-col gap-1">
+<a class="text-neutral-500 px-2 py-2 flex items-center gap-4 hover:text-white text-xs" href="#">
+<span class="material-symbols-outlined text-sm">help</span>
+<span>Support</span>
+</a>
+<a class="text-neutral-500 px-2 py-2 flex items-center gap-4 hover:text-error text-xs" href="#">
+<span class="material-symbols-outlined text-sm">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Chat Canvas -->
+<main class="flex-1 flex flex-col relative h-full bg-surface overflow-hidden">
+<!-- TopAppBar (Shared Component: TopAppBar) -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 w-full bg-transparent backdrop-blur-xl bg-neutral-900/10 flat no shadows font-['Inter'] tracking-tight display-sm">
+<div class="flex items-center gap-4">
+<div class="lg:hidden p-2 rounded-full hover:bg-white/5">
+<span class="material-symbols-outlined text-on-surface">menu</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="relative">
+<img class="w-10 h-10 rounded-full border-2 border-primary/30" data-alt="Abstract vibrant flowing digital landscape avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCyxXzHQsrpwzXIWWVhWZZMXkejAA7kPlJf8w-KIKWsWNEkQzKNl16JgrRnNm816gTE9_J36vU1bIggfj_6joxw6Mh6hmZ_HdDsvkkGouIVyasnosZ0yaFE9NhzEER3y6XOXK-dn3VX4UF1fuahlOTHSx-ufQCnpaW3Yvb8I-Du_DcjAbJMcBIEYNs5NNQ_r1-2FJz-iDdStVjNDxA51lxh4l4kL8AmJ_up-1B4j0QpjjvR-qZXJgi1zfbysjwOrZk3YlKnmMIfuImD"/>
+<div class="absolute bottom-0 right-0 w-3 h-3 bg-secondary rounded-full border-2 border-background"></div>
+</div>
+<div>
+<h2 id="persona-title" class="text-on-surface font-bold leading-none">Ethereal Oracle</h2>
+<span class="text-[10px] text-secondary font-semibold uppercase tracking-widest">Active Intelligence</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="hidden sm:flex items-center gap-2 px-4 py-2 bg-surface-container-high/50 hover:bg-surface-container-high transition-colors rounded-full border border-white/5 text-sm">
+<span class="material-symbols-outlined text-sm">sync_alt</span>
+<span>Switch Persona</span>
+</button>
+<div class="flex items-center gap-1">
+<button class="p-2 text-neutral-400 hover:bg-white/5 rounded-full scale-95 active:duration-100 transition-all">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="p-2 text-neutral-400 hover:bg-white/5 rounded-full scale-95 active:duration-100 transition-all">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Message Thread Area -->
+<div id="chat-thread" class="flex-1 overflow-y-auto px-4 md:px-8 pt-24 pb-32 space-y-8 no-scrollbar">
+<!-- Day Divider -->
+<div class="flex justify-center">
+<span class="px-4 py-1 rounded-full bg-surface-container-low text-[10px] font-bold text-on-surface-variant/50 uppercase tracking-widest">Today</span>
+</div>
+<!-- AI Message -->
+<div class="flex flex-col gap-2 max-w-[85%] lg:max-w-[70%]">
+<div class="flex items-end gap-3 group">
+<div class="flex-1 bg-surface-container-low text-on-surface p-5 rounded-xl rounded-bl-sm relative overflow-hidden group-hover:bg-surface-container-low/80 transition-all">
+<!-- Glow effect -->
+<div class="absolute top-0 left-0 w-32 h-32 bg-secondary/10 blur-[40px] -translate-x-1/2 -translate-y-1/2"></div>
+<p class="body-lg relative z-10 leading-relaxed">
+                            Hello. I am the Oracle. How can I assist your journey through the digital expanse today? My neural pathways are primed for complex problem-solving and creative synthesis.
+                        </p>
+</div>
+<span class="text-[10px] text-on-surface-variant/40 mb-1">09:41 AM</span>
+</div>
+</div>
+<!-- User Message -->
+<div class="flex flex-col items-end gap-2 ml-auto max-w-[85%] lg:max-w-[70%]">
+<div class="flex items-end flex-row-reverse gap-3 group">
+<div class="flex-1 bg-gradient-to-br from-primary to-primary-container text-on-primary-container p-5 rounded-xl rounded-br-sm shadow-xl shadow-primary/10">
+<p class="body-lg leading-relaxed">
+                            I'm looking for a way to architecturalize a distributed AI system using ethereal components. Can you help me sketch out the blueprint?
+                        </p>
+</div>
+<span class="text-[10px] text-on-surface-variant/40 mb-1">09:42 AM</span>
+</div>
+</div>
+<!-- AI Message with Rich Content -->
+<div class="flex flex-col gap-2 max-w-[85%] lg:max-w-[70%]">
+<div class="flex items-end gap-3">
+<div class="flex-1 bg-surface-container-low text-on-surface p-5 rounded-xl rounded-bl-sm relative overflow-hidden">
+<div class="absolute top-0 left-0 w-32 h-32 bg-secondary/10 blur-[40px] -translate-x-1/2 -translate-y-1/2"></div>
+<p class="body-lg relative z-10 leading-relaxed mb-4">
+                            Conceptualizing the architecture now. Here's a high-level overview of the "Ethereal Mesh" framework:
+                        </p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3 relative z-10">
+<div class="p-3 bg-background/50 rounded-lg border border-white/5">
+<span class="material-symbols-outlined text-secondary mb-1">hub</span>
+<p class="text-xs font-bold text-on-surface mb-1">Distributed Core</p>
+<p class="text-[10px] text-on-surface-variant">Non-linear processing nodes.</p>
+</div>
+<div class="p-3 bg-background/50 rounded-lg border border-white/5">
+<span class="material-symbols-outlined text-tertiary mb-1">neurology</span>
+<p class="text-xs font-bold text-on-surface mb-1">Neural Synapse</p>
+<p class="text-[10px] text-on-surface-variant">Low-latency communication.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- AI Typing Indicator (Hidden by default) -->
+<div id="typing-indicator" class="flex flex-col gap-2 max-w-[80px] hidden mb-8 mt-2">
+<div class="flex items-center gap-1.5 bg-surface-container-low p-4 rounded-full">
+<div class="w-1.5 h-1.5 bg-secondary rounded-full animate-bounce" style="animation-delay: 0ms;"></div>
+<div class="w-1.5 h-1.5 bg-secondary rounded-full animate-bounce" style="animation-delay: 150ms;"></div>
+<div class="w-1.5 h-1.5 bg-secondary rounded-full animate-bounce" style="animation-delay: 300ms;"></div>
+</div>
+</div>
+</div>
+<!-- Floating Chat Input Bar -->
+<footer class="absolute bottom-24 lg:bottom-8 left-0 w-full px-4 md:px-8 z-40 pointer-events-none">
+<div class="max-w-4xl mx-auto pointer-events-auto">
+<div class="bg-surface-container-low/80 backdrop-blur-3xl p-2 pl-6 rounded-full flex items-center gap-3 border border-white/5 shadow-2xl transition-all focus-within:ring-2 focus-within:ring-primary/30">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">add_circle</span>
+</button>
+<input id="chat-input" class="flex-1 bg-transparent border-none focus:ring-0 text-on-surface placeholder:text-on-surface-variant/50 py-3 font-body" placeholder="Type a message..." type="text"/>
+<div class="flex items-center gap-1 pr-2">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">mic</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">image</span>
+</button>
+<button id="send-btn" class="ml-2 w-12 h-12 bg-primary rounded-full flex items-center justify-center text-on-primary-container hover:scale-110 active:scale-95 transition-all shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">send</span>
+</button>
+</div>
+</div>
+<p class="text-center text-[10px] text-on-surface-variant/30 mt-4 uppercase tracking-[0.2em]">Ethereal Intelligence v2.4.0</p>
+</div>
+</footer>
+<!-- BottomNavBar (Shared Component: BottomNavBar - Mobile Only) -->
+<nav class="lg:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-neutral-950/70 backdrop-blur-lg rounded-t-[3rem] border-t border-white/10 shadow-[0_-10px_40px_rgba(0,0,0,0.5)] font-['Inter'] text-[10px] font-semibold tracking-[0.05em] uppercase">
+<a class="flex flex-col items-center justify-center bg-violet-600/10 text-cyan-400 rounded-full p-3 mb-2 scale-110 transition-all" href="#">
+<span class="material-symbols-outlined">chat_bubble</span>
+<span class="mt-1">Chat</span>
+</a>
+<a class="flex flex-col items-center justify-center text-neutral-500 p-3 hover:text-cyan-200 transition-all" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span class="mt-1">Explore</span>
+</a>
+<a class="flex flex-col items-center justify-center text-neutral-500 p-3 hover:text-cyan-200 transition-all" href="#">
+<span class="material-symbols-outlined">auto_awesome_motion</span>
+<span class="mt-1">Library</span>
+</a>
+<a class="flex flex-col items-center justify-center text-neutral-500 p-3 hover:text-cyan-200 transition-all" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="mt-1">Profile</span>
+</a>
+</nav>
+<!-- Dynamic Thinking Glow Background -->
+<div class="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+<div class="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] animate-pulse"></div>
+<div class="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-tertiary/5 rounded-full blur-[100px] animate-pulse" style="animation-delay: 2s"></div>
+</div>
+</main>
+<!-- Persona Switcher Modal (Simplified implementation) -->
+<div class="hidden fixed inset-0 z-[100] bg-background/80 backdrop-blur-md flex items-center justify-center p-6">
+<div class="w-full max-w-lg bg-surface-container rounded-xl p-8 border border-white/5 shadow-2xl">
+<div class="flex justify-between items-center mb-8">
+<h3 class="text-2xl font-black tracking-tight text-on-surface">Select Persona</h3>
+<button class="p-2 rounded-full hover:bg-white/5"><span class="material-symbols-outlined">close</span></button>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="p-6 rounded-xl bg-primary/10 border border-primary/20 cursor-pointer hover:bg-primary/20 transition-all">
+<div class="w-12 h-12 rounded-full bg-primary mb-4 flex items-center justify-center text-on-primary"><span class="material-symbols-outlined">auto_awesome</span></div>
+<p class="font-bold">Ethereal Oracle</p>
+<p class="text-xs text-on-surface-variant">All-purpose creative logic</p>
+</div>
+<div class="p-6 rounded-xl bg-surface-container-high border border-white/5 cursor-pointer hover:bg-white/5 transition-all">
+<div class="w-12 h-12 rounded-full bg-secondary mb-4 flex items-center justify-center text-on-secondary"><span class="material-symbols-outlined">code</span></div>
+<p class="font-bold">Logic Weaver</p>
+<p class="text-xs text-on-surface-variant">Expert code &amp; technicals</p>
+</div>
+</div>
+</div>
+</div>
+<script>
+const userId = localStorage.getItem("persona_ai_user_id");
+const currentPersona = localStorage.getItem("persona_ai_current_persona") || "general_assistant";
+
+if (!userId) {
+    window.location.href = "/frontend/user_onboarding_flow.html";
+}
+
+// Update UI Title
+const titleMap = {
+    'friend': 'Friend',
+    'mentor': 'Mentor',
+    'girlfriend': 'Girlfriend',
+    'general_assistant': 'General Assistant',
+    'dietitian': 'Dietitian',
+    'doctor': 'Doctor'
+};
+document.getElementById('persona-title').innerText = titleMap[currentPersona] || 'AI Assistant';
+
+const thread = document.getElementById('chat-thread');
+const input = document.getElementById('chat-input');
+const sendBtn = document.getElementById('send-btn');
+const typingIndicator = document.getElementById('typing-indicator');
+
+// Clear placeholders except typing indicator
+Array.from(thread.children).forEach(child => {
+    if (child.id !== 'typing-indicator' && !child.innerText.includes('Today')) {
+        child.remove();
+    }
+});
+
+function appendUserMessage(text) {
+    const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    const html = `
+    <div class="flex flex-col items-end gap-2 ml-auto max-w-[85%] lg:max-w-[70%] mb-4">
+        <div class="flex items-end flex-row-reverse gap-3 group">
+            <div class="flex-1 bg-gradient-to-br from-primary to-primary-container text-on-primary-container p-5 rounded-xl rounded-br-sm shadow-xl shadow-primary/10">
+                <p class="body-lg leading-relaxed whitespace-pre-wrap">${text}</p>
+            </div>
+            <span class="text-[10px] text-on-surface-variant/40 mb-1">${time}</span>
+        </div>
+    </div>`;
+    typingIndicator.insertAdjacentHTML('beforebegin', html);
+    scrollToBottom();
+}
+
+function appendAIMessage(text) {
+    const time = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    const html = `
+    <div class="flex flex-col gap-2 max-w-[85%] lg:max-w-[70%] mb-4">
+        <div class="flex items-end gap-3 group">
+            <div class="flex-1 bg-surface-container-low text-on-surface p-5 rounded-xl rounded-bl-sm relative overflow-hidden group-hover:bg-surface-container-low/80 transition-all">
+                <div class="absolute top-0 left-0 w-32 h-32 bg-secondary/10 blur-[40px] -translate-x-1/2 -translate-y-1/2"></div>
+                <p class="body-lg relative z-10 leading-relaxed whitespace-pre-wrap">${text}</p>
+            </div>
+            <span class="text-[10px] text-on-surface-variant/40 mb-1">${time}</span>
+        </div>
+    </div>`;
+    typingIndicator.insertAdjacentHTML('beforebegin', html);
+    scrollToBottom();
+}
+
+function scrollToBottom() {
+    thread.scrollTop = thread.scrollHeight;
+}
+
+// Load Memory
+async function loadHistory() {
+    try {
+        const response = await fetch('/memory?user_id=' + userId + '&persona=' + currentPersona);
+        if (response.ok) {
+            const data = await response.json();
+            data.recent_messages.forEach(msg => {
+                if(msg.role === 'user') appendUserMessage(msg.content);
+                else appendAIMessage(msg.content);
+            });
+        }
+    } catch(e) { console.error("Could not load history"); }
+}
+
+// Send Message
+async function sendMessage() {
+    const text = input.value.trim();
+    if (!text) return;
+    
+    input.value = '';
+    appendUserMessage(text);
+    
+    typingIndicator.classList.remove('hidden');
+    scrollToBottom();
+    
+    try {
+        const response = await fetch('/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                user_id: userId,
+                persona: currentPersona,
+                message: text
+            })
+        });
+        
+        typingIndicator.classList.add('hidden');
+        if (response.ok) {
+            const data = await response.json();
+            appendAIMessage(data.response);
+        } else {
+            appendAIMessage("⚠️ Error connecting to AI. Please try again.");
+        }
+    } catch(e) {
+        typingIndicator.classList.add('hidden');
+        appendAIMessage("⚠️ Network error.");
+    }
+}
+
+sendBtn.addEventListener('click', sendMessage);
+input.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') sendMessage();
+});
+
+// Init
+loadHistory();
+
+</script>
+</body></html>
