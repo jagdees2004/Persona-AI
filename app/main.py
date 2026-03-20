@@ -6,6 +6,7 @@ Production-ready with rate limiting, CORS, exception handling, and lifespan mana
 import logging
 from contextlib import asynccontextmanager
 from datetime import datetime, timezone
+from pathlib import Path
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -15,7 +16,7 @@ from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 
 from core.config import get_settings
-from core.database import init_db
+from core.database import init_db, close_db
 from core.logging_config import setup_logging
 
 # Setup logging first
@@ -33,11 +34,12 @@ async def lifespan(app: FastAPI):
     # Startup
     logger.info("🚀 Starting Persona AI Chatbot...")
     logger.info(f"LLM Model: {settings.LLM_MODEL}")
+    logger.info(f"MongoDB: {settings.MONGODB_DB_NAME}")
     logger.info(f"ChromaDB path: {settings.CHROMA_PERSIST_DIR}")
 
-    # Initialize database tables
+    # Initialize MongoDB indexes
     await init_db()
-    logger.info("✅ Database initialized")
+    logger.info("✅ MongoDB initialized")
 
     # Pre-load persona config
     from personas.persona_service import get_all_personas
@@ -48,6 +50,8 @@ async def lifespan(app: FastAPI):
 
     # Shutdown
     logger.info("👋 Shutting down Persona AI Chatbot...")
+    await close_db()
+    logger.info("✅ MongoDB connection closed")
 
 
 # Create FastAPI app
@@ -100,7 +104,8 @@ app.include_router(health_router)
 
 
 from fastapi.staticfiles import StaticFiles
-app.mount("/frontend", StaticFiles(directory="../frontend"), name="frontend")
+frontend_path = Path(__file__).parent.parent / "frontend"
+app.mount("/frontend", StaticFiles(directory=str(frontend_path)), name="frontend")
 
 # Root endpoint
 @app.get("/", tags=["Root"])
@@ -116,10 +121,12 @@ async def root():
 
 if __name__ == "__main__":
     import uvicorn
+    logger.info(f"MongoDB URI detected: {settings.MONGODB_URI[:20]}...")
+    logger.info(f"ChromaDB path: {settings.CHROMA_PERSIST_DIR}")
+    
     uvicorn.run(
-        "main:app",
+        app,
         host=settings.APP_HOST,
         port=settings.APP_PORT,
-        reload=True,
         log_level=settings.LOG_LEVEL.lower(),
     )

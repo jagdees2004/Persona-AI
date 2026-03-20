@@ -9,10 +9,22 @@ services:
       - .env
     volumes:
       - ./chroma_data:/app/chroma_data
-      - ./persona_ai.db:/app/persona_ai.db
+    depends_on:
+      - mongodb
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "python", "-c", "import httpx; httpx.get('http://localhost:8000/health')"]
       interval: 30s
       timeout: 10s
       retries: 3
+
+  mongodb:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    restart: unless-stopped
+
+volumes:
+  mongodb_data:

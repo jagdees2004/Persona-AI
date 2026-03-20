@@ -1,48 +1,73 @@
 """
-Database setup with SQLAlchemy async engine (aiosqlite).
+Database setup with MongoDB (motor async driver).
 """
 
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
-from sqlalchemy.orm import DeclarativeBase
+import logging
+from motor.motor_asyncio import AsyncIOMotorClient
 from core.config import get_settings
 
+logger = logging.getLogger(__name__)
 settings = get_settings()
 
-engine = create_async_engine(
-    settings.DATABASE_URL,
-    echo=False,
-    future=True,
-)
-
-async_session_factory = async_sessionmaker(
-    engine,
-    class_=AsyncSession,
-    expire_on_commit=False,
-)
+# MongoDB client (lazy-initialized on startup)
+_client: AsyncIOMotorClient = None
+_db = None
 
 
-class Base(DeclarativeBase):
-    pass
+def get_client() -> AsyncIOMotorClient:
+    """Get the MongoDB client instance."""
+    global _client
+    if _client is None:
+        _client = AsyncIOMotorClient(settings.MONGODB_URI)
+    return _client
 
 
-async def get_db() -> AsyncSession:
-    """FastAPI dependency — yields an async database session."""
-    async with async_session_factory() as session:
-        try:
-            yield session
-            await session.commit()
-        except Exception:
-            await session.rollback()
-            raise
-        finally:
-            await session.close()
+def get_db():
+    """Get the MongoDB database instance."""
+    global _db
+    if _db is None:
+        client = get_client()
+        _db = client[settings.MONGODB_DB_NAME]
+    return _db
 
 
 async def init_db():
-    """Create all tables on startup."""
-    async with engine.begin() as conn:
-        from models.user import UserProfile
-        from models.persona_preferences import PersonaPreferences
-        from models.chat_history import ChatHistory
-        from models.persona_summary import PersonaSummary
-        await conn.run_sync(Base.metadata.create_all)
+    """
+    Initialize MongoDB: create indexes for efficient queries.
+    Called on application startup.
+    """
+    db = get_db()
+
+    # user_profiles: unique index on user_id (acts as primary key)
+    await db.user_profiles.create_index("user_id", unique=True)
+
+    # chat_history: compound index for fast lookups
+    await db.chat_history.create_index([("user_id", 1), ("persona", 1)])
+    await db.chat_history.create_index("timestamp")
+
+    # persona_summaries: unique compound index (one summary per user+persona)
+    await db.persona_summaries.create_index(
+        [("user_id", 1), ("persona", 1)], unique=True
+    )
+
+    # persona_preferences: unique compound index
+    await db.persona_preferences.create_index(
+        [("user_id", 1), ("persona", 1)], unique=True
+    )
+
+    # short_term_memory: compound index + TTL (optional)
+    await db.short_term_memory.create_index(
+        [("user_id", 1), ("persona", 1)]
+    )
+
+    logger.info("✅ MongoDB indexes created successfully")
+
+
+async def close_db():
+    """Close the MongoDB connection. Called on application shutdown."""
+    global _client, _db
+    if _client:
+        _client.close()
+        _client = None
+        _db = None
+        logger.info("MongoDB connection closed")

@@ -1,16 +1,17 @@
 """
 Database initialization script.
-Creates all tables defined in SQLAlchemy models.
+Creates MongoDB indexes for all collections.
 """
 
 import asyncio
-from core.database import init_db
+from core.database import init_db, close_db
 
 
 async def main():
-    print("Creating database tables...")
+    print("Creating MongoDB indexes...")
     await init_db()
-    print("✅ Database tables created successfully!")
+    print("✅ MongoDB indexes created successfully!")
+    await close_db()
 
 
 if __name__ == "__main__":

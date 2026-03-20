@@ -5,7 +5,6 @@ Chat route: main conversation endpoint with persona switching and memory.
 import logging
 from datetime import datetime, timezone
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.database import get_db
 from models.schemas import ChatRequest, ChatResponse
@@ -21,10 +20,7 @@ router = APIRouter(tags=["Chat"])
 
 
 @router.post("/chat", response_model=ChatResponse)
-async def chat(
-    request: ChatRequest,
-    db: AsyncSession = Depends(get_db),
-):
+async def chat(request: ChatRequest):
     """
     Main chat endpoint.
     - Resolves persona (switch if provided, else use stored)
@@ -34,6 +30,7 @@ async def chat(
     - Applies safety filters
     - Stores conversation in all memory layers
     """
+    db = get_db()
     user_id = request.user_id
     message = request.message
 

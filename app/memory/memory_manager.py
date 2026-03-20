@@ -1,18 +1,21 @@
 """
 Memory Manager: orchestrates short-term + long-term memory.
 Ensures strict persona isolation — ONLY accesses the current persona's memory.
+
+Uses MongoDB for persistent storage and ChromaDB for vector search.
 """
 
 import logging
 import uuid
-from datetime import datetime
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from datetime import datetime, timezone
 
 from memory.short_term_memory import (
     add_message as st_add,
+    add_message_persistent as st_add_persistent,
     get_recent as st_get_recent,
     clear as st_clear,
+    clear_persistent as st_clear_persistent,
+    load_from_db as st_load_from_db,
 )
 from memory.vector_memory import (
     store_embedding,
@@ -20,8 +23,6 @@ from memory.vector_memory import (
     delete_user_persona_memory,
     get_memory_count,
 )
-from models.chat_history import ChatHistory
-from models.persona_summary import PersonaSummary
 from core.config import get_settings
 
 logger = logging.getLogger(__name__)
@@ -29,7 +30,7 @@ settings = get_settings()
 
 
 async def store_conversation(
-    db: AsyncSession,
+    db,
     user_id: str,
     persona: str,
     user_message: str,
@@ -37,13 +38,13 @@ async def store_conversation(
 ) -> None:
     """
     Store a conversation turn in all memory layers:
-    1. Short-term (in-memory)
+    1. Short-term (in-memory + MongoDB)
     2. Long-term (ChromaDB vector store)
-    3. Persistent (SQLite chat_history)
+    3. Persistent (MongoDB chat_history)
     """
-    # 1. Short-term memory
-    st_add(user_id, persona, "user", user_message)
-    st_add(user_id, persona, "assistant", ai_response)
+    # 1. Short-term memory (with MongoDB persistence)
+    await st_add_persistent(db, user_id, persona, "user", user_message)
+    await st_add_persistent(db, user_id, persona, "assistant", ai_response)
 
     # 2. Long-term vector memory — store the exchange as a single document
     doc_id = f"{user_id}_{persona}_{uuid.uuid4().hex[:12]}"
@@ -53,20 +54,23 @@ async def store_conversation(
     except Exception as e:
         logger.error(f"Failed to store vector memory: {e}")
 
-    # 3. Persistent chat history (SQLite)
-    chat_entry = ChatHistory(
-        user_id=user_id,
-        persona=persona,
-        message=user_message,
-        response=ai_response,
-    )
-    db.add(chat_entry)
-    await db.flush()
+    # 3. Persistent chat history (MongoDB)
+    try:
+        await db.chat_history.insert_one({
+            "user_id": user_id,
+            "persona": persona,
+            "message": user_message,
+            "response": ai_response,
+            "timestamp": datetime.now(timezone.utc),
+        })
+    except Exception as e:
+        logger.error(f"Failed to store chat history: {e}")
+
     logger.debug(f"Stored conversation for user={user_id}, persona={persona}")
 
 
 async def retrieve_context(
-    db: AsyncSession,
+    db,
     user_id: str,
     persona: str,
     query: str,
@@ -79,6 +83,9 @@ async def retrieve_context(
 
     STRICT: Only retrieves data for the specified persona.
     """
+    # Load short-term from MongoDB if not in memory
+    await st_load_from_db(db, user_id, persona)
+
     # 1. Short-term recent messages
     recent = st_get_recent(user_id, persona, limit=10)
 
@@ -104,74 +111,63 @@ async def retrieve_context(
     }
 
 
-async def get_persona_summary(db: AsyncSession, user_id: str, persona: str) -> str | None:
+async def get_persona_summary(db, user_id: str, persona: str) -> str | None:
     """Get the stored summary for a user+persona pair."""
-    result = await db.execute(
-        select(PersonaSummary).where(
-            PersonaSummary.user_id == user_id,
-            PersonaSummary.persona == persona,
-        )
+    doc = await db.persona_summaries.find_one(
+        {"user_id": user_id, "persona": persona},
+        {"_id": 0, "summary": 1},
     )
-    entry = result.scalar_one_or_none()
-    return entry.summary if entry else None
+    return doc["summary"] if doc else None
 
 
-async def update_persona_summary(db: AsyncSession, user_id: str, persona: str, summary: str) -> None:
+async def update_persona_summary(db, user_id: str, persona: str, summary: str) -> None:
     """Update or create the summary for a user+persona pair."""
-    result = await db.execute(
-        select(PersonaSummary).where(
-            PersonaSummary.user_id == user_id,
-            PersonaSummary.persona == persona,
-        )
+    await db.persona_summaries.update_one(
+        {"user_id": user_id, "persona": persona},
+        {
+            "$set": {
+                "summary": summary,
+                "updated_at": datetime.now(timezone.utc),
+            },
+            "$setOnInsert": {
+                "user_id": user_id,
+                "persona": persona,
+            },
+        },
+        upsert=True,
     )
-    existing = result.scalar_one_or_none()
-    if existing:
-        existing.summary = summary
-    else:
-        entry = PersonaSummary(user_id=user_id, persona=persona, summary=summary)
-        db.add(entry)
-    await db.flush()
     logger.info(f"Updated summary for user={user_id}, persona={persona}")
 
 
 async def reset_persona_memory(
-    db: AsyncSession,
+    db,
     user_id: str,
     persona: str,
 ) -> dict:
     """
     Clear ALL memory for a specific user+persona:
-    - Short-term (in-memory)
+    - Short-term (in-memory + MongoDB)
     - Long-term (ChromaDB)
-    - Summary (SQLite)
-    - Chat history (SQLite)
+    - Summary (MongoDB)
+    - Chat history (MongoDB)
     """
-    # 1. Clear short-term
-    st_clear(user_id, persona)
+    # 1. Clear short-term (in-memory + MongoDB)
+    await st_clear_persistent(db, user_id, persona)
 
-    # 2. Clear long-term vectors
+    # 2. Clear long-term vectors (ChromaDB)
     deleted_vectors = delete_user_persona_memory(user_id, persona)
 
     # 3. Clear summary
-    result = await db.execute(
-        select(PersonaSummary).where(
-            PersonaSummary.user_id == user_id,
-            PersonaSummary.persona == persona,
-        )
-    )
-    summary_entry = result.scalar_one_or_none()
-    if summary_entry:
-        await db.delete(summary_entry)
+    await db.persona_summaries.delete_many({
+        "user_id": user_id,
+        "persona": persona,
+    })
 
     # 4. Clear chat history
-    from sqlalchemy import delete
-    await db.execute(
-        delete(ChatHistory).where(
-            ChatHistory.user_id == user_id,
-            ChatHistory.persona == persona,
-        )
-    )
-    await db.flush()
+    await db.chat_history.delete_many({
+        "user_id": user_id,
+        "persona": persona,
+    })
 
     logger.info(f"Reset all memory for user={user_id}, persona={persona}")
     return {

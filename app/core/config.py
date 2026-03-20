@@ -15,8 +15,9 @@ class Settings(BaseSettings):
     # Embedding
     EMBEDDING_MODEL: str = "sentence-transformers/all-MiniLM-L6-v2"
 
-    # Database
-    DATABASE_URL: str = "sqlite+aiosqlite:///./persona_ai.db"
+    # Database (MongoDB)
+    MONGODB_URI: str = "mongodb://localhost:27017"
+    MONGODB_DB_NAME: str = "persona_ai"
 
     # ChromaDB
     CHROMA_PERSIST_DIR: str = "./chroma_data"
@@ -32,8 +33,9 @@ class Settings(BaseSettings):
     LONG_TERM_TOP_K: int = 5
 
     class Config:
-        env_file = ".env"
+        env_file = [".env", "app/.env", "../.env"]
         env_file_encoding = "utf-8"
+        extra = "ignore"
 
 
 @lru_cache()
