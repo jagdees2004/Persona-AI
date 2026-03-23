@@ -31,9 +31,12 @@ class Settings(BaseSettings):
     SHORT_TERM_MEMORY_LIMIT: int = 20
     LONG_TERM_TOP_K: int = 5
 
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
+    # Pydantic v2 settings configuration
+    model_config = {
+        "env_file": ".env",
+        "env_file_encoding": "utf-8",
+        "extra": "ignore"
+    }
 
 
 @lru_cache()
